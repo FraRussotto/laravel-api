@@ -110,18 +110,17 @@ class ProjectController extends Controller
     public function update(Request $request, Project $project)
     {
         $form_data = $request->all();
-        if ($project['name'] == $form_data['name']) {
-            $form_data['slug'] = $project['slug'];
-        } else {
+        if ($project['name'] !== $form_data['name']) {
             $form_data['slug'] = Project::generateSlug($form_data['name']);
+        } else {
+            $form_data['slug'] = $project['slug'];
         }
         if (array_key_exists('image', $form_data)) {
             if ($project->image) {
                 Storage::disk('public')->delete($project->image);
             }
-
-            $form_data['image_original_name'] = $request->file('image')->getClientOriginalName();
             $form_data['image'] = Storage::put('uploads', $form_data['image']);
+            $form_data['image_original_name'] = $request->file('image')->getClientOriginalName();
         }
 
 
