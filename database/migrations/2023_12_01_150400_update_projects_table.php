@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::table('projects', function (Blueprint $table) {
             //Selezione della posizione della colonna per la foreign key
             $table->unsignedBigInteger('type_id')->nullable()->after('id');
+
+            //$table->foreignIdFor('types');
             $table->foreign('type_id')->references('id')->on('types')->onDelete('set null');
         });
     }

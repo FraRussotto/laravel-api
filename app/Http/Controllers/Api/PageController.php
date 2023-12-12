@@ -8,20 +8,16 @@ use App\Models\Project;
 
 class PageController extends Controller
 {
-
-    public function prova()
-    {
-        $user = [
-            'name' => '<NAME>',
-            'email' => '<EMAIL>',
-        ];
-
-        return response()->json(compact($user));
-    }
-
     public function index()
     {
-        $projects = Project::all();
+        $projects = Project::paginate(1);
         return response()->json($projects);
+    }
+
+    public function getSlug($slug)
+    {
+        $project = Project::where('slug', $slug)->with('type', 'tecnologies')->first();
+
+        return response()->json($project);
     }
 }

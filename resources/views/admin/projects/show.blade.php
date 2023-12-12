@@ -1,6 +1,7 @@
 @extends('layouts.admin')
 
 @section('content')
+    @dump($project)
     <table class="table">
         <thead>
             <tr>
@@ -46,7 +47,6 @@
     <h3>Description:</h3>
     <div class="d-flex">
         <div class="w-50 pe-5">{!! $project->description !!}</div>
-        <div scope="col"><img class="img-fluid" src="{{ asset('storage/' . $project->image) }}"
-                alt="{{ $project->image }}"></div>
+        <img class="img-fluid" src="{{ asset('storage/' . $project->image) }}" alt="{{ $project->image_original_name }}">
     </div>
 @endsection

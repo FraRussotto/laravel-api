@@ -50,7 +50,7 @@
             <div class="mb-3">
                 <label for="image" class="form-label">Image</label>
                 <input type="file" class="form-control @error('image') is-invalid @enderror" id="image"
-                    name="image" aria-describedby="title" value="{{ old('image') }}">
+                    name="image" aria-describedby="title">
                 @error('image')
                     <p class="text-danger">{{ $image }}</p>
                 @enderror

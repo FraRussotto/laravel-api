@@ -62,9 +62,11 @@ class ProjectController extends Controller
 
         //Salvataggio dell'immagine
         if (array_key_exists('image', $form_data)) {
-            $form_data['image_original_name'] = $request->file('image')->getClientOriginalName();
             $form_data['image'] = Storage::put('uploads', $form_data['image']);
+            $form_data['image_original_name'] = $request->file('image')->getClientOriginalName();
         }
+
+        //$form_datal['date'] = date('Y-m-d');
 
         $new_project->fill($form_data);
         $new_project->save();
@@ -113,6 +115,17 @@ class ProjectController extends Controller
         } else {
             $form_data['slug'] = Project::generateSlug($form_data['name']);
         }
+        if (array_key_exists('image', $form_data)) {
+            if ($project->image) {
+                Storage::disk('public')->delete($project->image);
+            }
+
+            $form_data['image_original_name'] = $request->file('image')->getClientOriginalName();
+            $form_data['image'] = Storage::put('uploads', $form_data['image']);
+        }
+
+
+        //$form_datal['date'] = date('Y-m-d');
 
         $project->update($form_data);
         return view('admin.projects.show', compact('project'));

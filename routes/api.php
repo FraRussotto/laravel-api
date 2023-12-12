@@ -15,5 +15,6 @@ use App\Http\Controllers\Api\PageController;
 |
 */
 
-Route::get('/api', [PageController::class, 'prova']);
 Route::get('/projects', [PageController::class, 'index']);
+
+Route::get('/projects/get-project/{slug}', [PageController::class, 'getSlug']);
