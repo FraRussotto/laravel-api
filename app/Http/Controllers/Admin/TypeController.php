@@ -15,7 +15,8 @@ class TypeController extends Controller
      */
     public function index()
     {
-        //
+        $types = Type::all();
+        return view('admin.types.index', compact('types'));
     }
 
     public function TypesProjects()
@@ -43,7 +44,25 @@ class TypeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|max:30',
+        ], [
+            'name.required' => 'Il nome della tipologia è richiesto',
+            'name.max' => 'Il nome della tipologia deve avere massimo 30 caratteri',
+        ]);
+
+        $exists = Type::where('name', $request->name)->first();
+        if ($exists) {
+            return redirect()->route('admin.types.index')->with('error', 'Tipologia già presenta');
+        } else {
+            $form_data = $request->all();
+            $new_Type = new Type();
+            $form_data['slug'] = Type::generateSlug($form_data['name']);
+
+            $new_Type->fill($form_data);
+            $new_Type->save();
+            return redirect()->route('admin.types.index')->with('success', 'Tipologia inserita con successo');
+        }
     }
 
     /**
@@ -86,8 +105,9 @@ class TypeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Type $type)
     {
-        //
+        $type->delete();
+        return redirect()->route('admin.types.index')->with('success', 'Tipologia eliminata con successo');
     }
 }

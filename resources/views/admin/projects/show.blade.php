@@ -1,7 +1,6 @@
 @extends('layouts.admin')
 
 @section('content')
-    @dump($project)
     <table class="table">
         <thead>
             <tr>
