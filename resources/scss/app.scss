@@ -45,6 +45,14 @@ main {
         height: 100%;
         overflow: auto;
     }
+    .form-hidden {
+        width: 100%;
+        border: none;
+        &:focus {
+            border: none;
+            outline: none;
+        }
+    }
 }
 
 .active {

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Type;
+use App\Functions\Helper;
 
 class TypeController extends Controller
 {
@@ -94,9 +95,22 @@ class TypeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Type $type)
     {
-        //
+        $val_data = $request->validate([
+            'name' => 'required|max:30',
+        ], [
+            'name.required' => 'Il nome della tipologia è richiesto',
+            'name.max' => 'Il nome della tipologia deve avere massimo 30 caratteri',
+        ]);
+
+        $exists = Type::where('name', $request->name)->first();
+        if ($exists) {
+            return redirect()->route('admin.types.index')->with('error', 'Tipologia già presente');
+        }
+        $val_data['slug'] = Helper::generateSlug($request->name, Type::class);
+        $type->update($val_data);
+        return redirect()->route('admin.types.index')->with('success', 'Tipologia aggiornata con successo');
     }
 
     /**
