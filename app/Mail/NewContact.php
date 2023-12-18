@@ -30,7 +30,7 @@ class NewContact extends Mailable
     {
         return new Envelope(
             subject: 'New Contact',
-            replayTo: $this->lead->email
+            replyTo: $this->lead->email
         );
     }
 
